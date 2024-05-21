@@ -5,8 +5,9 @@ import "fmt"
 const NMAX int = 30
 
 type PPM struct {
-	ketua, prodi, judul, sumber_dana, luaran, tahun_kegiatan string
-	anggota                                                  [4]string
+	jenis, ketua, prodi, judul, sumber_dana, luaran string
+	tahun_kegiatan                                  int
+	anggota                                         [4]string
 }
 
 type arrPPM [NMAX]PPM
@@ -29,12 +30,14 @@ func tulisan_menu() {
 
 func menu_utama() {
 	var pilihan int
+	var ArrayPPM arrPPM
+	var nPPM int
 
 	tulisan_menu()
 	fmt.Scan(&pilihan)
 	for pilihan != 6 {
 		if pilihan == 1 {
-			tambah_data()
+			tambah_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 2 {
 			edit_data()
 		} else if pilihan == 3 {
@@ -50,8 +53,40 @@ func menu_utama() {
 	fmt.Print("Terimakasih telah menggunakan aplikasi Tri Dharma Perguruan Tinggi.")
 }
 
-func tambah_data() {
+func tambah_data(A *arrPPM, n *int) {
+	var nAnggota int
+	// Input Jenis PPM
+	fmt.Print("Input jenis PPM: ")
+	fmt.Scan(&A[*n].jenis)
 
+	fmt.Print("Input nama ketua: ")
+	fmt.Scan(&A[*n].ketua)
+	fmt.Print("Input jumlah anggota: ")
+	fmt.Scan(&nAnggota)
+
+	// Jika inputan pengguna itu lebih dari 4, maka pengguna akan diminta untuk input ulang.
+	for nAnggota > 4 {
+		fmt.Print("WARNING!!")
+		fmt.Println("Jumlah anggota melebihi batas (Max 4)")
+		fmt.Print("Input jumlah anggota: ")
+		fmt.Scan(&nAnggota)
+	}
+	// Input nama anggota sebanyak nAnggota.
+	for i := 0; i < nAnggota; i++ {
+		fmt.Printf("Input anggota ke-%d: ", i+1)
+		fmt.Scan(&A[*n].anggota[i])
+	}
+
+	fmt.Print("Input prodi: ")
+	fmt.Scan(&A[*n].prodi)
+	fmt.Print("Input judul: ")
+	fmt.Scan(&A[*n].judul)
+	fmt.Print("Input sumber dana: ")
+	fmt.Scan(&A[*n].sumber_dana)
+	fmt.Print("Input luaran PPM: ")
+	fmt.Scan(&A[*n].luaran)
+	fmt.Print("Input tahun kegiatan: ")
+	fmt.Scan(&A[*n].tahun_kegiatan)
 }
 
 func edit_data() {
