@@ -6,7 +6,7 @@ const NMAX int = 30
 
 type PPM struct {
 	jenis, ketua, prodi, judul, sumber_dana, luaran string
-	tahun_kegiatan                                  int
+	tahun_kegiatan, jumAnggota                      int
 	anggota                                         [4]string
 }
 
@@ -76,6 +76,7 @@ func tambah_data(A *arrPPM, n *int) {
 		fmt.Printf("Input anggota ke-%d: ", i+1)
 		fmt.Scan(&A[*n].anggota[i])
 	}
+	A[*n].jumAnggota = nAnggota
 
 	fmt.Print("Input prodi: ")
 	fmt.Scan(&A[*n].prodi)
