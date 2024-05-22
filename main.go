@@ -35,6 +35,7 @@ func menu_utama() {
 
 	tulisan_menu()
 	fmt.Scan(&pilihan)
+	fmt.Print("\033[H\033[2J")
 	for pilihan != 6 {
 		if pilihan == 1 {
 			fmt.Println()
@@ -46,8 +47,7 @@ func menu_utama() {
 			fmt.Println()
 			hapus_data()
 		} else if pilihan == 4 {
-			fmt.Println()
-			tampilkan_data()
+			tampilkan_data(ArrayPPM, nPPM)
 		} else if pilihan == 5 {
 			fmt.Println()
 			urutkan_data()
@@ -172,8 +172,20 @@ func hapus_data() {
 
 }
 
-func tampilkan_data() {
-
+func tampilkan_data(A arrPPM, n int) {
+	for i := 0; i < n; i++ {
+		fmt.Printf("----Data ke-%d----\n", i+1)
+		fmt.Printf("Jenis: %s\n", A[i].jenis)
+		fmt.Printf("Judul: %s\n", A[i].judul)
+		fmt.Printf("Ketua: %s\n", A[i].ketua)
+		for j := 0; j < A[i].jumAnggota; j++ {
+			fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
+		}
+		fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
+		fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
+		fmt.Printf("Luaran: %s\n", A[i].luaran)
+		fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
+	}
 }
 
 func urutkan_data() {
