@@ -38,20 +38,17 @@ func menu_utama() {
 	fmt.Print("\033[H\033[2J")
 	for pilihan != 6 {
 		if pilihan == 1 {
-			fmt.Println()
 			tambah_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 2 {
-			fmt.Println()
 			edit_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 3 {
-			fmt.Println()
-			hapus_data()
+			hapus_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 4 {
 			tampilkan_data(ArrayPPM, nPPM)
 		} else if pilihan == 5 {
-			fmt.Println()
 			urutkan_data()
 		}
+		fmt.Println()
 		tulisan_menu()
 		fmt.Scan(&pilihan)
 	}
@@ -110,7 +107,7 @@ func edit_data(A *arrPPM, n *int) {
 
 	idx = sequential_search(*A, *n, jenis, judul)
 	if idx == -1 {
-		fmt.Print("Data yang ingin diedit tidak di temukan.")
+		fmt.Println("Data yang ingin diedit tidak di temukan.")
 		return
 	}
 	fmt.Println("Tentukan jenis data yang mau diubah: ")
@@ -168,11 +165,25 @@ func sequential_search(A arrPPM, n int, jenis, judul string) int {
 	return idx
 }
 
-func hapus_data() {
+func hapus_data(A *arrPPM, n *int) {
+	var pilihan int
+	fmt.Print("Input data ke berapa yang ingin di hapus: ")
+	fmt.Scan(&pilihan)
 
+	if pilihan > *n {
+		fmt.Print("Data yang ingin di hapus tidak ada.")
+		return
+	}
+
+	for i := pilihan - 1; i < *n-1; i++ {
+		A[i] = A[i+1]
+	}
+
+	*n--
 }
 
 func tampilkan_data(A arrPPM, n int) {
+	fmt.Println(A)
 	for i := 0; i < n; i++ {
 		fmt.Printf("----Data ke-%d----\n", i+1)
 		fmt.Printf("Jenis: %s\n", A[i].jenis)
