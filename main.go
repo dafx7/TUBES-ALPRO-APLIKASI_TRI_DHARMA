@@ -165,16 +165,6 @@ func edit_data(A *arrPPM, n *int) {
 	}
 }
 
-func sequential_search(A arrPPM, n int, jenis, judul string) int {
-	var idx int = -1
-	for i := 0; i < n; i++ {
-		if A[i].jenis == jenis && A[i].judul == judul {
-			return i
-		}
-	}
-	return idx
-}
-
 func hapus_data(A *arrPPM, n *int) {
 	var pilihan int
 	fmt.Print("Input data ke berapa yang ingin di hapus: ")
@@ -184,8 +174,6 @@ func hapus_data(A *arrPPM, n *int) {
 		fmt.Print("Data yang ingin di hapus tidak ada.")
 		return
 	}
-	fmt.Println(*n)
-
 	// Jika data yang di hapus bukan data yang terakhir atau NMAX maka penghapusan data dilakukan dengan metode menimpa.
 	if pilihan != NMAX {
 		for i := pilihan - 1; i < *n; i++ {
@@ -200,21 +188,98 @@ func hapus_data(A *arrPPM, n *int) {
 }
 
 func tampilkan_data(A arrPPM, n int) {
-	for i := 0; i < n; i++ {
-		fmt.Printf("----Data ke-%d----\n", i+1)
-		fmt.Printf("Jenis: %s\n", A[i].jenis)
-		fmt.Printf("Judul: %s\n", A[i].judul)
-		fmt.Printf("Ketua: %s\n", A[i].ketua)
-		for j := 0; j < A[i].jumAnggota; j++ {
-			fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
+	var jenis, prodi string
+	var tahun, pilihan int
+	var found bool = false
+
+	// Jika tidak ada di dalam array maka beri tahu pengguna
+	if n == 0 {
+		fmt.Println("WARNING!")
+		fmt.Println("TIDAK ADA DATA YANG DIINPUT.")
+	} else {
+		// Menampilkan opsi kepada pengguna
+		fmt.Println("Opsi Penampilan")
+		fmt.Println("1. Tampilkan semua data")
+		fmt.Println("2. Tampilkan dengan filter")
+		fmt.Print("Input Pilihan: ")
+		fmt.Scan(&pilihan) // Membaca pilihan pengguna
+
+		if pilihan == 1 {
+			// Jika pilihan 1, tampilkan semua data
+			fmt.Println("List Data:")
+			for i := 0; i < n; i++ {
+				// Menampilkan data ke-i
+				fmt.Printf("----Data ke-%d----\n", i+1)
+				fmt.Printf("Jenis: %s\n", A[i].jenis)
+				fmt.Printf("Judul: %s\n", A[i].judul)
+				fmt.Printf("Ketua: %s\n", A[i].ketua)
+				for j := 0; j < A[i].jumAnggota; j++ {
+					// Menampilkan anggota ke-j dari data ke-i
+					fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
+				}
+				fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
+				fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
+				fmt.Printf("Luaran: %s\n", A[i].luaran)
+				fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
+			}
+		} else {
+			// Jika pilihan 2, minta input filter dari pengguna
+			fmt.Println("Input filter untuk menampilkan data:")
+			fmt.Print("Jenis (Penelitian/Abdimas): ")
+			fmt.Scan(&jenis) // Membaca filter jenis
+			fmt.Print("Tahun: ")
+			fmt.Scan(&tahun) // Membaca filter tahun
+			fmt.Print("Fakultas/Prodi: ")
+			fmt.Scan(&prodi) // Membaca filter prodi
+
+			// Menampilkan data yang sesuai dengan filter
+			fmt.Println("List Data:")
+			for i := 0; i < n; i++ {
+				// Cek apakah data ke-i sesuai dengan filter
+				if A[i].jenis == jenis && A[i].tahun_kegiatan == tahun && A[i].prodi == prodi {
+					// Satu atau lebih data sesuai filter ditemukan
+					found = true
+					// Menampilkan data ke-i jika sesuai filter
+					fmt.Printf("----Data ke-%d----\n", i+1)
+					fmt.Printf("Jenis: %s\n", A[i].jenis)
+					fmt.Printf("Judul: %s\n", A[i].judul)
+					fmt.Printf("Ketua: %s\n", A[i].ketua)
+					for j := 0; j < A[i].jumAnggota; j++ {
+						// Menampilkan anggota ke-j dari data ke-i
+						fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
+					}
+					fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
+					fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
+					fmt.Printf("Luaran: %s\n", A[i].luaran)
+					fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
+				}
+			}
+			// Jika tidak ada yang di temukan sesuai filter maka beri tahu pengguna.
+			if !found {
+				fmt.Println("Tidak ada data dengan filter yang di input.")
+			}
 		}
-		fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
-		fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
-		fmt.Printf("Luaran: %s\n", A[i].luaran)
-		fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
 	}
 }
 
+func sequential_search(A arrPPM, n int, jenis, judul string) int {
+	var idx int = -1
+	for i := 0; i < n; i++ {
+		if A[i].jenis == jenis && A[i].judul == judul {
+			return i
+		}
+	}
+	return idx
+}
+
 func urutkan_data() {
+
+}
+
+func insertion_sort() {
+
+}
+
+func selection_sort() {
 
 }
