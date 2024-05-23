@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-const NMAX int = 30
+const NMAX int = 10
 
 type PPM struct {
 	jenis, ketua, prodi, judul, sumber_dana, luaran string
@@ -18,6 +18,14 @@ func main() {
 }
 
 func tulisan_menu() {
+	asciiArt := `
+ __  __ _____ _   _ _   _ 
+|  \/  | ____| \ | | | | |
+| |\/| |  _| |  \| | | | |
+| |  | | |___| |\  | |_| |
+|_|  |_|_____|_| \_|\___/ 
+`
+	fmt.Println(asciiArt)
 	fmt.Println("1. Menambahkan Data")
 	fmt.Println("2. Edit Data")
 	fmt.Println("3. Hapus Data")
@@ -35,8 +43,8 @@ func menu_utama() {
 
 	tulisan_menu()
 	fmt.Scan(&pilihan)
-	fmt.Print("\033[H\033[2J")
 	for pilihan != 6 {
+		fmt.Print("\033[H\033[2J")
 		if pilihan == 1 {
 			tambah_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 2 {
@@ -48,9 +56,9 @@ func menu_utama() {
 		} else if pilihan == 5 {
 			urutkan_data()
 		}
-		fmt.Println()
 		tulisan_menu()
 		fmt.Scan(&pilihan)
+		fmt.Println()
 	}
 	fmt.Print("Terimakasih telah menggunakan aplikasi Tri Dharma Perguruan Tinggi.")
 }
@@ -94,6 +102,8 @@ func tambah_data(A *arrPPM, n *int) {
 	fmt.Print("Tahun kegiatan: ")
 	fmt.Scan(&A[*n].tahun_kegiatan)
 	*n++
+	fmt.Print("\033[H\033[2J")
+	fmt.Println("DATA BERHASIL DITAMBAHKAN.")
 }
 
 func edit_data(A *arrPPM, n *int) {
@@ -174,16 +184,22 @@ func hapus_data(A *arrPPM, n *int) {
 		fmt.Print("Data yang ingin di hapus tidak ada.")
 		return
 	}
+	fmt.Println(*n)
 
-	for i := pilihan - 1; i < *n-1; i++ {
-		A[i] = A[i+1]
+	// Jika data yang di hapus bukan data yang terakhir atau NMAX maka penghapusan data dilakukan dengan metode menimpa.
+	if pilihan != NMAX {
+		for i := pilihan - 1; i < *n; i++ {
+			A[i] = A[i+1]
+		}
+	} else {
+		// Tetapi jika data yang dihapus adalah data ke NMAX maka data index terakhir harus dijadikan himpunan kosong.
+		A[pilihan-1] = PPM{}
 	}
 
 	*n--
 }
 
 func tampilkan_data(A arrPPM, n int) {
-	fmt.Println(A)
 	for i := 0; i < n; i++ {
 		fmt.Printf("----Data ke-%d----\n", i+1)
 		fmt.Printf("Jenis: %s\n", A[i].jenis)
