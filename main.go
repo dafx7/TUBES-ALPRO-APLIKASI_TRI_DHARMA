@@ -54,7 +54,7 @@ func menu_utama() {
 		} else if pilihan == 4 {
 			tampilkan_data(ArrayPPM, nPPM)
 		} else if pilihan == 5 {
-			urutkan_data()
+			urutkan_data(ArrayPPM, nPPM)
 		}
 		tulisan_menu()
 		fmt.Scan(&pilihan)
@@ -272,14 +272,32 @@ func sequential_search(A arrPPM, n int, jenis, judul string) int {
 	return idx
 }
 
-func urutkan_data() {
+func urutkan_data(A arrPPM, n int) {
+	var pilihan int
+	fmt.Println("Pilih algoritma yang di pakai untuk sorting:")
+	fmt.Println("1. Insertion Sort")
+	fmt.Println("2. Selection Sort")
+
+	fmt.Print("Input Pilihan: ")
+	fmt.Scan(&pilihan)
+
+	for pilihan != 1 && pilihan != 2 {
+		fmt.Println("Error! Coba lagi.")
+		fmt.Print("Input Pilihan: ")
+		fmt.Scan(&pilihan)
+	}
+
+	if pilihan == 1 {
+		insertion_sort(&A, n)
+	} else {
+		selection_sort(&A, n)
+	}
+}
+
+func insertion_sort(A *arrPPM, n int) {
 
 }
 
-func insertion_sort() {
-
-}
-
-func selection_sort() {
+func selection_sort(A *arrPPM, n int) {
 
 }
