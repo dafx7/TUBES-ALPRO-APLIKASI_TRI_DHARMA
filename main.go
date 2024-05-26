@@ -54,7 +54,7 @@ func menu_utama() {
 		} else if pilihan == 4 {
 			tampilkan_data(ArrayPPM, nPPM)
 		} else if pilihan == 5 {
-			urutkan_data(ArrayPPM, nPPM)
+			urutkan_data(&ArrayPPM, nPPM)
 		}
 		tulisan_menu()
 		fmt.Scan(&pilihan)
@@ -187,6 +187,21 @@ func hapus_data(A *arrPPM, n *int) {
 	*n--
 }
 
+func cetak_data(A arrPPM, idx int) {
+	fmt.Printf("----Data ke-%d----\n", idx+1)
+	fmt.Printf("Jenis: %s\n", A[idx].jenis)
+	fmt.Printf("Judul: %s\n", A[idx].judul)
+	fmt.Printf("Ketua: %s\n", A[idx].ketua)
+	for j := 0; j < A[idx].jumAnggota; j++ {
+		// Menampilkan anggota ke-j dari data ke-i
+		fmt.Printf("Anggota ke-%d: %s\n", j+1, A[idx].anggota[j])
+	}
+	fmt.Printf("Prodi/Fakultas: %s\n", A[idx].prodi)
+	fmt.Printf("Sumber Dana: %s\n", A[idx].sumber_dana)
+	fmt.Printf("Luaran: %s\n", A[idx].luaran)
+	fmt.Printf("Tahun kegiatan: %d\n", A[idx].tahun_kegiatan)
+}
+
 func tampilkan_data(A arrPPM, n int) {
 	var jenis, prodi string
 	var tahun, pilihan int
@@ -209,18 +224,7 @@ func tampilkan_data(A arrPPM, n int) {
 			fmt.Println("List Data:")
 			for i := 0; i < n; i++ {
 				// Menampilkan data ke-i
-				fmt.Printf("----Data ke-%d----\n", i+1)
-				fmt.Printf("Jenis: %s\n", A[i].jenis)
-				fmt.Printf("Judul: %s\n", A[i].judul)
-				fmt.Printf("Ketua: %s\n", A[i].ketua)
-				for j := 0; j < A[i].jumAnggota; j++ {
-					// Menampilkan anggota ke-j dari data ke-i
-					fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
-				}
-				fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
-				fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
-				fmt.Printf("Luaran: %s\n", A[i].luaran)
-				fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
+				cetak_data(A, i)
 			}
 		} else {
 			// Jika pilihan 2, minta input filter dari pengguna
@@ -240,18 +244,7 @@ func tampilkan_data(A arrPPM, n int) {
 					// Satu atau lebih data sesuai filter ditemukan
 					found = true
 					// Menampilkan data ke-i jika sesuai filter
-					fmt.Printf("----Data ke-%d----\n", i+1)
-					fmt.Printf("Jenis: %s\n", A[i].jenis)
-					fmt.Printf("Judul: %s\n", A[i].judul)
-					fmt.Printf("Ketua: %s\n", A[i].ketua)
-					for j := 0; j < A[i].jumAnggota; j++ {
-						// Menampilkan anggota ke-j dari data ke-i
-						fmt.Printf("Anggota ke-%d: %s\n", j+1, A[i].anggota[j])
-					}
-					fmt.Printf("Prodi/Fakultas: %s\n", A[i].prodi)
-					fmt.Printf("Sumber Dana: %s\n", A[i].sumber_dana)
-					fmt.Printf("Luaran: %s\n", A[i].luaran)
-					fmt.Printf("Tahun kegiatan: %d\n", A[i].tahun_kegiatan)
+					cetak_data(A, i)
 				}
 			}
 			// Jika tidak ada yang di temukan sesuai filter maka beri tahu pengguna.
@@ -272,7 +265,7 @@ func sequential_search(A arrPPM, n int, jenis, judul string) int {
 	return idx
 }
 
-func urutkan_data(A arrPPM, n int) {
+func urutkan_data(A *arrPPM, n int) {
 	var pilihan int
 	fmt.Println("Pilih algoritma yang di pakai untuk sorting:")
 	fmt.Println("1. Insertion Sort")
@@ -288,14 +281,24 @@ func urutkan_data(A arrPPM, n int) {
 	}
 
 	if pilihan == 1 {
-		insertion_sort(&A, n)
+		insertion_sort(&*A, n)
 	} else {
-		selection_sort(&A, n)
+		selection_sort(&*A, n)
 	}
 }
 
 func insertion_sort(A *arrPPM, n int) {
-
+	var tmp PPM
+	var j int
+	for i := 1; i < n; i++ {
+		tmp = A[i]
+		j = i - 1
+		for j >= 0 && A[j].tahun_kegiatan > tmp.tahun_kegiatan {
+			A[j+1] = A[j]
+			j--
+		}
+		A[j+1] = tmp
+	}
 }
 
 func selection_sort(A *arrPPM, n int) {
