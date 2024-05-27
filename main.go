@@ -302,5 +302,20 @@ func insertion_sort(A *arrPPM, n int) {
 }
 
 func selection_sort(A *arrPPM, n int) {
-
+	var pass, idx, i int
+	var temp PPM
+	pass = 1
+	for pass <= n-1 {
+		idx = pass - 1
+		i = pass
+		for i < n {
+			if A[idx].tahun_kegiatan > A[i].tahun_kegiatan {
+				idx = i
+			}
+			i++
+		}
+		temp = A[pass-1]
+		A[idx] = temp
+		pass++
+	}
 }
