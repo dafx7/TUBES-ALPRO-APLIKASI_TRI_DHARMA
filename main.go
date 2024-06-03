@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
+)
 
 const NMAX int = 10
 
@@ -10,9 +16,23 @@ type PPM struct {
 	anggota                                         [4]string
 }
 
+var db *sql.DB
+
 type arrPPM [NMAX]PPM
 
 func main() {
+	var err error
+	db, err = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/tri_dharma")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to the database successfully.")
 	fmt.Println("Selamat datang di aplikasi Tri Dharma Perguruan Tinggi.")
 	menu_utama()
 }
@@ -101,9 +121,16 @@ func tambah_data(A *arrPPM, n *int) {
 	fmt.Scan(&A[*n].luaran)
 	fmt.Print("Tahun kegiatan: ")
 	fmt.Scan(&A[*n].tahun_kegiatan)
+	query := `INSERT INTO ppm (jenis, ketua, prodi, judul, sumber_dana, luaran, tahun_kegiatan, jumAnggota, anggota1, anggota2, anggota3, anggota4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	_, err := db.Exec(query, A[*n].jenis, A[*n].ketua, A[*n].prodi, A[*n].judul, A[*n].sumber_dana, A[*n].luaran, A[*n].tahun_kegiatan, A[*n].jumAnggota, A[*n].anggota[0], A[*n].anggota[1], A[*n].anggota[2], A[*n].anggota[3])
+	if err != nil {
+		log.Fatal(err)
+	}
 	*n++
 	fmt.Print("\033[H\033[2J")
+
 	fmt.Println("DATA BERHASIL DITAMBAHKAN.")
+
 }
 
 func edit_data(A *arrPPM, n *int) {
