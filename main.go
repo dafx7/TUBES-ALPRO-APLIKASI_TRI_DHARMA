@@ -166,25 +166,30 @@ func edit_data(A *arrPPM, n *int) {
 }
 
 func hapus_data(A *arrPPM, n *int) {
-	var pilihan int
-	fmt.Print("Input data ke berapa yang ingin di hapus: ")
-	fmt.Scan(&pilihan)
+	var idx int
+	var judul string
+	fmt.Print("Input judul data yang ingin di hapus: ")
+	fmt.Scan(&judul)
 
-	if pilihan > *n {
-		fmt.Print("Data yang ingin di hapus tidak ada.")
-		return
-	}
-	// Jika data yang di hapus bukan data yang terakhir atau NMAX maka penghapusan data dilakukan dengan metode menimpa.
-	if pilihan != NMAX {
-		for i := pilihan - 1; i < *n; i++ {
-			A[i] = A[i+1]
+	sort_by_judul(&*A, *n)
+	idx = binary_search(*A, *n, judul)
+	fmt.Println("idx: ", idx)
+
+	if idx != -1 {
+		// Jika data yang di hapus bukan data yang terakhir atau NMAX maka penghapusan data dilakukan dengan metode menimpa.
+		if idx+1 != NMAX {
+			for i := idx; i < *n-1; i++ {
+				A[i] = A[i+1]
+			}
+		} else {
+			// Tetapi jika data yang dihapus adalah data ke NMAX maka data index terakhir harus dijadikan himpunan kosong.
+			A[idx] = PPM{}
 		}
-	} else {
-		// Tetapi jika data yang dihapus adalah data ke NMAX maka data index terakhir harus dijadikan himpunan kosong.
-		A[pilihan-1] = PPM{}
-	}
 
-	*n--
+		*n--
+	} else {
+		fmt.Print("Tidak terdapat data yang memuat judul tersebut.")
+	}
 }
 
 func cetak_data(A arrPPM, idx int) {
@@ -256,6 +261,25 @@ func tampilkan_data(A arrPPM, n int) {
 	}
 }
 
+func binary_search(A arrPPM, n int, judul string) int {
+	var kiri, kanan, mid, found int
+	kiri = 0
+	kanan = n - 1
+	found = -1
+	for kiri <= kanan && found == -1 {
+		mid = (kiri + kanan) / 2
+		if A[mid].judul[0] > judul[0] {
+			kanan = mid - 1
+		} else if A[mid].judul[0] < judul[0] {
+			kiri = mid + 1
+		} else {
+			return mid
+		}
+		fmt.Println(A[mid].judul)
+	}
+	return found
+}
+
 func sequential_search(A arrPPM, n int, jenis, judul string) int {
 	var idx int = -1
 	for i := 0; i < n; i++ {
@@ -320,4 +344,18 @@ func selection_sort(A *arrPPM, n int) {
 		}
 	}
 
+}
+
+func sort_by_judul(A *arrPPM, n int) {
+	var tmp PPM
+	var j int
+	for i := 1; i < n; i++ {
+		tmp = A[i]
+		j = i - 1
+		for j >= 0 && A[j].judul[0] > tmp.judul[0] {
+			A[j+1] = A[j]
+			j--
+		}
+		A[j+1] = tmp
+	}
 }
