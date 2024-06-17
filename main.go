@@ -188,6 +188,7 @@ func hapus_data(A *arrPPM, n *int) {
 }
 
 func cetak_data(A arrPPM, idx int) {
+	fmt.Print("\033[H\033[2J")
 	fmt.Printf("----Data ke-%d----\n", idx+1)
 	fmt.Printf("Jenis: %s\n", A[idx].jenis)
 	fmt.Printf("Judul: %s\n", A[idx].judul)
@@ -268,8 +269,8 @@ func sequential_search(A arrPPM, n int, jenis, judul string) int {
 func urutkan_data(A *arrPPM, n int) {
 	var pilihan int
 	fmt.Println("Pilih algoritma yang di pakai untuk sorting:")
-	fmt.Println("1. Insertion Sort")
-	fmt.Println("2. Selection Sort")
+	fmt.Println("1. Decending")
+	fmt.Println("2. Ascending")
 
 	fmt.Print("Input Pilihan: ")
 	fmt.Scan(&pilihan)
@@ -293,7 +294,7 @@ func insertion_sort(A *arrPPM, n int) {
 	for i := 1; i < n; i++ {
 		tmp = A[i]
 		j = i - 1
-		for j >= 0 && A[j].tahun_kegiatan > tmp.tahun_kegiatan {
+		for j >= 0 && A[j].tahun_kegiatan < tmp.tahun_kegiatan {
 			A[j+1] = A[j]
 			j--
 		}
@@ -302,20 +303,21 @@ func insertion_sort(A *arrPPM, n int) {
 }
 
 func selection_sort(A *arrPPM, n int) {
-	var pass, idx, i int
-	var temp PPM
-	pass = 1
-	for pass <= n-1 {
-		idx = pass - 1
-		i = pass
-		for i < n {
-			if A[idx].tahun_kegiatan > A[i].tahun_kegiatan {
-				idx = i
+	var idx_min int
+	var tmp PPM
+	for i := 0; i < n; i++ {
+		idx_min = i
+		// fmt.Println("idxmin: ", idx_min)
+		for j := i + 1; j < n; j++ {
+			if A[j].tahun_kegiatan < A[idx_min].tahun_kegiatan {
+				idx_min = j
 			}
-			i++
 		}
-		temp = A[pass-1]
-		A[idx] = temp
-		pass++
+		if idx_min != i {
+			tmp = A[idx_min]
+			A[idx_min] = A[i]
+			A[i] = tmp
+		}
 	}
+
 }
