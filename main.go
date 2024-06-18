@@ -20,12 +20,12 @@ func main() {
 
 func tulisan_menu() {
 	asciiArt := `
-	__  __ _____ _   _ _   _ 
-	|  \/  | ____| \ | | | | |
-	| |\/| |  _| |  \| | | | |
-	| |  | | |___| |\  | |_| |
-	|_|  |_|_____|_| \_|\___/ 
-	`
+ __  __ _____ _   _ _   _ 
+|  \/  | ____| \ | | | | |
+| |\/| |  _| |  \| | | | |
+| |  | | |___| |\  | |_| |
+|_|  |_|_____|_| \_|\___/ 
+`
 	fmt.Println(asciiArt)
 	fmt.Println("1. Menambahkan Data")
 	fmt.Println("2. Edit Data")
@@ -48,7 +48,6 @@ func menu_utama() {
 	fmt.Scan(&pilihan)
 	// Loop sampai pengguna memilih untuk keluar (pilihan 6)
 	for pilihan != 6 {
-		fmt.Print("\033[H\033[2J")
 		// Menjalankan fungsi berdasarkan pilihan pengguna
 		if pilihan == 1 {
 			tambah_data(&ArrayPPM, &nPPM)
@@ -85,7 +84,6 @@ func tambah_data(A *arrPPM, n *int) {
 
 	// Jika inputan pengguna itu lebih dari 4, maka pengguna akan diminta untuk input ulang.
 	for nAnggota > 4 {
-		fmt.Println()
 		fmt.Println("WARNING!!")
 		fmt.Println("Jumlah anggota melebihi batas (Max 4)")
 		fmt.Println()
@@ -211,7 +209,6 @@ func hapus_data(A *arrPPM, n *int) {
 
 func cetak_data(A arrPPM, idx int) {
 	// Membersihkan layar dan menampilkan data berdasarkan indeks
-	fmt.Print("\033[H\033[2J")
 	fmt.Printf("----Data ke-%d----\n", idx+1)
 	fmt.Printf("Jenis: %s\n", A[idx].jenis)
 	fmt.Printf("Judul: %s\n", A[idx].judul)
@@ -224,6 +221,7 @@ func cetak_data(A arrPPM, idx int) {
 	fmt.Printf("Sumber Dana: %s\n", A[idx].sumber_dana)
 	fmt.Printf("Luaran: %s\n", A[idx].luaran)
 	fmt.Printf("Tahun kegiatan: %d\n", A[idx].tahun_kegiatan)
+	fmt.Println()
 }
 
 func tampilkan_data(A arrPPM, n int) {
