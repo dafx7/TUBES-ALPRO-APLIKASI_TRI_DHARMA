@@ -13,18 +13,19 @@ type PPM struct {
 type arrPPM [NMAX]PPM
 
 func main() {
+	// Menampilkan pesan selamat datang di aplikasi dan memanggil fungsi menu_utama()
 	fmt.Println("Selamat datang di aplikasi Tri Dharma Perguruan Tinggi.")
 	menu_utama()
 }
 
 func tulisan_menu() {
 	asciiArt := `
- __  __ _____ _   _ _   _ 
-|  \/  | ____| \ | | | | |
-| |\/| |  _| |  \| | | | |
-| |  | | |___| |\  | |_| |
-|_|  |_|_____|_| \_|\___/ 
-`
+	__  __ _____ _   _ _   _ 
+	|  \/  | ____| \ | | | | |
+	| |\/| |  _| |  \| | | | |
+	| |  | | |___| |\  | |_| |
+	|_|  |_|_____|_| \_|\___/ 
+	`
 	fmt.Println(asciiArt)
 	fmt.Println("1. Menambahkan Data")
 	fmt.Println("2. Edit Data")
@@ -41,10 +42,14 @@ func menu_utama() {
 	var ArrayPPM arrPPM
 	var nPPM int
 
+	// Menampilkan menu pilihan
 	tulisan_menu()
+	// Membaca input pilihan pengguna
 	fmt.Scan(&pilihan)
+	// Loop sampai pengguna memilih untuk keluar (pilihan 6)
 	for pilihan != 6 {
 		fmt.Print("\033[H\033[2J")
+		// Menjalankan fungsi berdasarkan pilihan pengguna
 		if pilihan == 1 {
 			tambah_data(&ArrayPPM, &nPPM)
 		} else if pilihan == 2 {
@@ -56,10 +61,12 @@ func menu_utama() {
 		} else if pilihan == 5 {
 			urutkan_data(&ArrayPPM, nPPM)
 		}
+		// Menampilkan menu pilihan lagi setelah aksi selesai
 		tulisan_menu()
 		fmt.Scan(&pilihan)
 		fmt.Println()
 	}
+	// Menampilkan pesan terimakasih ketika keluar dari aplikasi
 	fmt.Print("Terimakasih telah menggunakan aplikasi Tri Dharma Perguruan Tinggi.")
 }
 
@@ -69,8 +76,10 @@ func tambah_data(A *arrPPM, n *int) {
 	fmt.Print("Input jenis PPM: ")
 	fmt.Scan(&A[*n].jenis)
 
+	// Input nama ketua
 	fmt.Print("Input nama ketua: ")
 	fmt.Scan(&A[*n].ketua)
+	// Input jumlah anggota
 	fmt.Print("Berapa jumlah anggota: ")
 	fmt.Scan(&nAnggota)
 
@@ -91,6 +100,7 @@ func tambah_data(A *arrPPM, n *int) {
 	}
 	A[*n].jumAnggota = nAnggota
 
+	// Input data lainnya
 	fmt.Print("Fakultas: ")
 	fmt.Scan(&A[*n].prodi)
 	fmt.Print("Judul: ")
@@ -109,17 +119,20 @@ func tambah_data(A *arrPPM, n *int) {
 func edit_data(A *arrPPM, n *int) {
 	var pengubah, jenis, judul string
 	var idx, idx_anggota, peng_tahun, pilihan int
+	// Input filter untuk data yang ingin diubah
 	fmt.Println("Input filter untuk data yang ingin diubah")
 	fmt.Print("Jenis data: ")
 	fmt.Scan(&jenis)
 	fmt.Print("Judul data: ")
 	fmt.Scan(&judul)
 
+	// Mencari indeks data yang sesuai dengan filter
 	idx = sequential_search(*A, *n, jenis, judul)
 	if idx == -1 {
 		fmt.Println("Data yang ingin diedit tidak di temukan.")
 		return
 	}
+	// Menampilkan jenis data yang bisa diubah
 	fmt.Println("Tentukan jenis data yang mau diubah: ")
 
 	fmt.Println("1. Ketua")
@@ -132,6 +145,7 @@ func edit_data(A *arrPPM, n *int) {
 
 	fmt.Print("Input pilihan: ")
 	fmt.Scan(&pilihan)
+	// Mengubah data sesuai pilihan pengguna
 	if pilihan == 1 {
 		fmt.Print("Masukan nama ketua yang baru: ")
 		fmt.Scan(&pengubah)
@@ -168,10 +182,13 @@ func edit_data(A *arrPPM, n *int) {
 func hapus_data(A *arrPPM, n *int) {
 	var idx int
 	var judul string
+	// Input judul data yang ingin di hapus
 	fmt.Print("Input judul data yang ingin di hapus: ")
 	fmt.Scan(&judul)
 
+	// Mengurutkan data berdasarkan judul sebelum melakukan pencarian biner
 	sort_by_judul(&*A, *n)
+	// Mencari indeks data yang ingin dihapus
 	idx = binary_search(*A, *n, judul)
 	fmt.Println("idx: ", idx)
 
@@ -193,6 +210,7 @@ func hapus_data(A *arrPPM, n *int) {
 }
 
 func cetak_data(A arrPPM, idx int) {
+	// Membersihkan layar dan menampilkan data berdasarkan indeks
 	fmt.Print("\033[H\033[2J")
 	fmt.Printf("----Data ke-%d----\n", idx+1)
 	fmt.Printf("Jenis: %s\n", A[idx].jenis)
@@ -213,7 +231,7 @@ func tampilkan_data(A arrPPM, n int) {
 	var tahun, pilihan int
 	var found bool = false
 
-	// Jika tidak ada di dalam array maka beri tahu pengguna
+	// Jika tidak ada data di dalam array maka beri tahu pengguna
 	if n == 0 {
 		fmt.Println("WARNING!")
 		fmt.Println("TIDAK ADA DATA YANG DIINPUT.")
@@ -266,6 +284,7 @@ func binary_search(A arrPPM, n int, judul string) int {
 	kiri = 0
 	kanan = n - 1
 	found = -1
+	// Melakukan pencarian biner
 	for kiri <= kanan && found == -1 {
 		mid = (kiri + kanan) / 2
 		if A[mid].judul[0] > judul[0] {
@@ -282,6 +301,7 @@ func binary_search(A arrPPM, n int, judul string) int {
 
 func sequential_search(A arrPPM, n int, jenis, judul string) int {
 	var idx int = -1
+	// Melakukan pencarian berurutan
 	for i := 0; i < n; i++ {
 		if A[i].jenis == jenis && A[i].judul == judul {
 			return i
@@ -292,6 +312,7 @@ func sequential_search(A arrPPM, n int, jenis, judul string) int {
 
 func urutkan_data(A *arrPPM, n int) {
 	var pilihan int
+	// Meminta pilihan pengguna untuk jenis algoritma sorting
 	fmt.Println("Pilih algoritma yang di pakai untuk sorting:")
 	fmt.Println("1. Decending")
 	fmt.Println("2. Ascending")
@@ -299,12 +320,14 @@ func urutkan_data(A *arrPPM, n int) {
 	fmt.Print("Input Pilihan: ")
 	fmt.Scan(&pilihan)
 
+	// Memastikan pilihan valid
 	for pilihan != 1 && pilihan != 2 {
 		fmt.Println("Error! Coba lagi.")
 		fmt.Print("Input Pilihan: ")
 		fmt.Scan(&pilihan)
 	}
 
+	// Menjalankan algoritma sorting berdasarkan pilihan pengguna
 	if pilihan == 1 {
 		insertion_sort(&*A, n)
 	} else {
@@ -315,6 +338,7 @@ func urutkan_data(A *arrPPM, n int) {
 func insertion_sort(A *arrPPM, n int) {
 	var tmp PPM
 	var j int
+	// Melakukan insertion sort secara descending
 	for i := 1; i < n; i++ {
 		tmp = A[i]
 		j = i - 1
@@ -329,9 +353,9 @@ func insertion_sort(A *arrPPM, n int) {
 func selection_sort(A *arrPPM, n int) {
 	var idx_min int
 	var tmp PPM
+	// Melakukan selection sort secara ascending
 	for i := 0; i < n; i++ {
 		idx_min = i
-		// fmt.Println("idxmin: ", idx_min)
 		for j := i + 1; j < n; j++ {
 			if A[j].tahun_kegiatan < A[idx_min].tahun_kegiatan {
 				idx_min = j
@@ -343,12 +367,12 @@ func selection_sort(A *arrPPM, n int) {
 			A[i] = tmp
 		}
 	}
-
 }
 
 func sort_by_judul(A *arrPPM, n int) {
 	var tmp PPM
 	var j int
+	// Melakukan insertion sort berdasarkan judul secara descending
 	for i := 1; i < n; i++ {
 		tmp = A[i]
 		j = i - 1
