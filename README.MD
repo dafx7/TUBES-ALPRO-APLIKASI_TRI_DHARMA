@@ -2,6 +2,10 @@
 
 ![Spesifikasi Tugas](./F3A35D29-4420-4DC3-A734-0D46C64DA83F.jpeg)
 
+## Kelompok 7
+- Ahmad Daffa Aminuddin Siregar (NIM: 103012300198)
+- Muhammad Hafiz Fahrial (NIM: 103012300217)
+
 ## Deskripsi
 Aplikasi ini digunakan untuk melakukan pengolahan data penelitian dan pengabdian masyarakat (abdimas) suatu perguruan tinggi. Data yang diolah adalah data penelitian dan abdimas. Pengguna aplikasi ini adalah pegawai PPM (Penelitian dan Pengabdian Masyarakat) di perguruan tinggi.
 
